@@ -54,15 +54,20 @@ public class SimpleShortenUrlService {
   }
 
   public String getOriginalUrlByShortenUrlKey(String shortenUrlKey) {
-    //레포지토리의 힘을 빌려서 키를 이용해서 shortenUrl을 우선 찾기!
     ShortenUrl shortenUrl = shortenUrlRepository.findShortenUrlByShortenUrlKey(shortenUrlKey);
-    //리다이렉트 한번 했으니 redirectCount를 +1해주는 코드 추가!
-    //자바빈 규약에 따라 도메인의 get(), set() 메서드를 난발하면 안된다.
-    //대신 도메인 메서드를 따로 만들어서 호출해야하며
-    //이는 캡슐화(encapsulation)를 시켰다라고도 표현한다.
+
+    if (shortenUrl == null) {
+      throw new RuntimeException("Shorten URL not found for key: " + shortenUrlKey);
+    }
+
+    System.out.println("Before increase - Key: " + shortenUrlKey + ", Count: " + shortenUrl.getRedirectCount());
+
     shortenUrl.increaseRedirectCount();
-    //그 찾은 shortenUrl의 originalUrl을 찾아서 반환
-    String originalUrl = shortenUrl.getOriginalUrl();
-    return originalUrl;
+
+    System.out.println("After increase - Key: " + shortenUrlKey + ", Count: " + shortenUrl.getRedirectCount());
+
+    shortenUrlRepository.saveShortenUrl(shortenUrl);
+
+    return shortenUrl.getOriginalUrl();
   }
 }
