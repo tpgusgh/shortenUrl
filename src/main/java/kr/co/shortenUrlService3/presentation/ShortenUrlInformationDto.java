@@ -10,7 +10,7 @@ public class ShortenUrlInformationDto {
   public ShortenUrlInformationDto(ShortenUrl shortenUrl) {
     this.originalUrl = shortenUrl.getOriginalUrl();
     this.shortenUrlKey = shortenUrl.getShortenUrlKey();
-    this.redirectCount = shortenUrl.getRedirectCount(); // 🚀🔥 여기서 직접 받아와야 함!
+    this.redirectCount = shortenUrl.getRedirectCount();
   }
 
   public String getOriginalUrl() {
